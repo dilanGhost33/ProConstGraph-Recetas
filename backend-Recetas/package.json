@@ -1,0 +1,21 @@
+{
+  "name": "recetas_backend",
+  "version": "1.0.0",
+  "description": "Backend de recetas en graph",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Kevin Lliguisupa, Wilson Sevilla, Jorge Jaramillo & Dilan Ramirez",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.2",
+    "graphql": "^15.8.0",
+    "graphql-import": "^1.0.2",
+    "graphql-server-express": "^1.4.1",
+    "graphql-tools": "^8.2.0",
+    "nodemon": "^2.0.15",
+    "pg-promise": "^10.11.1"
+  }
+}
