@@ -108,21 +108,17 @@ ALTER SEQUENCE public.menu_men_id_seq OWNED BY public.menu.men_id;
 
 CREATE SEQUENCE public.comentarios_com_id_seq_1;
 
-CREATE SEQUENCE public.comentarios_com_estado_seq;
-
 CREATE TABLE public.comentarios (
                 com_id INTEGER NOT NULL DEFAULT nextval('public.comentarios_com_id_seq_1'),
                 usu_id INTEGER NOT NULL,
                 men_id INTEGER NOT NULL,
                 com_descripcion VARCHAR,
-                com_estado BOOLEAN NOT NULL DEFAULT nextval('public.comentarios_com_estado_seq'),
+                com_estado BOOLEAN NOT NULL,
                 CONSTRAINT comentarios_pk PRIMARY KEY (com_id)
 );
 
 
 ALTER SEQUENCE public.comentarios_com_id_seq_1 OWNED BY public.comentarios.com_id;
-
-ALTER SEQUENCE public.comentarios_com_estado_seq OWNED BY public.comentarios.com_estado;
 
 CREATE SEQUENCE public.reacion_rea_id_seq_1;
 
