@@ -1,0 +1,83 @@
+#TYPE-SYSTEM
+
+type Query {
+    recetas(name:String):[receta]
+}
+
+type usuario {
+    usu_id: Int!,
+    usu_nickname: String,
+    usu_nombre: String,
+    usu_apellido: String,
+    usu_clave: String,
+    usu_estado: Boolean,
+    usu_imagen: String,
+    usu_correo: String
+}
+
+type categoria {
+    cat_id: Int!,
+    cat_nombre: String,
+    cat_estado: Boolean
+}
+
+type dificultad {
+    dif_id: Int!,
+    dif_nombre: String
+}
+
+type ing_tipo {
+    tip_id: Int!,
+    tip_nombre: String,
+    tip_estado: Boolean
+}
+
+type ingrediente {
+    ing_id: Int!,
+    ing_nombre: String,
+    ing_imagen: String,
+    ing_estado: Boolean,
+    tipo: ing_tipo
+}
+
+type detalle_receta {
+    det_rec_id: Int!,
+    det_rec_cantidad: Float,
+    det_rec_unidad: String,
+    det_rec_estado: Boolean,
+    ingrediente: ingrediente
+}
+
+type instruccion {
+    ins_id: Int!,
+    ins_numpaso: String,
+    ins_descripcion: String,
+    ins_estado: Boolean
+}
+
+type reaccion {
+    rea_id: Int!,
+    rea_like: Boolean,
+    rea_estado: Boolean
+}
+
+type comentario {
+    com_id: Int!,
+    com_descripcion: String,
+    com_estado: Boolean,
+    reacciones: [reaccion]
+}
+
+type receta {
+    rec_id: Int!,
+    rec_imagen: String,
+    rec_nombre: String,
+    rec_estado: Boolean,
+    rec_tiempo: Float,
+    autor: usuario,
+    dificultad: dificultad,
+    categorias: [categoria],
+    detalles: [detalle_receta],
+    instrucciones: [instruccion],
+    comentarios: [comentario]
+}
