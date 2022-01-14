@@ -1,6 +1,11 @@
 #TYPE-SYSTEM
 
 type Query {
+    usuarios(nickname:String):[usuario]
+    categorias(name:String):[categoria]
+    dificultades(name:String):[dificultad]
+    ing_tipos(name:String):[ing_tipo]
+    ingredientes(name:String):[ingrediente]
     recetas(name:String):[receta]
 }
 
@@ -18,7 +23,7 @@ type usuario {
 type categoria {
     cat_id: Int!,
     cat_nombre: String,
-    cat_estado: Boolean
+    cat_estado: String
 }
 
 type dificultad {
@@ -58,12 +63,14 @@ type instruccion {
 type reaccion {
     rea_id: Int!,
     rea_like: Boolean,
+    autor: usuario,
     rea_estado: Boolean
 }
 
 type comentario {
     com_id: Int!,
     com_descripcion: String,
+    autor: usuario,
     com_estado: Boolean,
     reacciones: [reaccion]
 }
