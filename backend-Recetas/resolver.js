@@ -80,6 +80,107 @@ const recetasResolver = {
         async autor(reaccion) {
             return db.one(`select * from usuario where usu_id=$1`, [reaccion.usu_id])
         }
+    },Mutation:{
+        async ActualizarComentario(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`INSERT INTO public.comentario(com_descripcion, aut_id, pub_id, com_estado)
+                VALUES ($1, $2, $3, $4) returning*;`
+                const resut=await db.one(sql,[comentario.com_descripcion, comentario.aut_id, comentario.pub_id, comentario.com_estado])
+                return resut
+            }
+        },
+        async ActualizarCategoria(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=$3, com_descripcion=$2 WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarReceta_Comentario(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarDetalle_Receta(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarDificultad(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarIngrediente_Tipo(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarIngrediente(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarInstruccion(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarReaccion(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarReceta(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        },
+        async ActualizarUsuario(root,{comentario}){
+            if(comentario==undefined)
+                return null
+            else{
+                const sql=`UPDATE comentario SET com_estado=false WHERE com_id=$1 returning *;`
+                const result=await db.one(sql,[comentario.com_id,comentario.com_descripcion, comentario.com_estado])
+                return result
+            }
+        }
     }
 }
 
