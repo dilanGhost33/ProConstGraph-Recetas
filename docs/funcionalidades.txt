@@ -1,0 +1,39 @@
+como usuario
+	jorch
+	1 registro de usuario
+	2 loggeo como usuario
+	3 cerrar sesion
+	4 editar su perfil
+	5 crud recetas
+	6 crud menus 
+	7 cru ingredientes 
+	8 cru categorias
+	
+	willy
+	1 crud instrucciones
+	2 ingresar imagenes a recetas, ingredientes, imagen de usuario
+	3 crea una receta que contenga ingredientes 
+	4 crear un menu que contenga recetas 
+	5 reaccionar a las recetas 
+	6 reaccionar a los menus 
+	7 comentar recetas 
+	8 comentar menus
+	 
+	dilan
+	1 asignar dificaultades a la receta
+		2 ingresar tipos de ingredientes
+	3 buscar recetas por categorias 
+	4 buscar ingredientes por tipo
+	5 buscar recetas por dificultad 
+	6 buscar receta por reaccion 
+	7 buscar receta por tiempo
+	
+	kevin 
+	1 buscar receta por nombre 
+	2 buscar recetas por numero de instrucciones 
+como administrador 
+	3 crud de menus 
+	4 crud de usuarios
+	5 crud ingredientes 
+	6 crud categorias
+	7 eliminar comentarios
