@@ -9,6 +9,18 @@ type Query {
     recetas(name:String):[receta]
 }
 
+type Mutation{
+    createUsuario(usuario:usuarioInput):usuario
+
+    eliminarUsuario(usuario:usuarioUpdate):usuario
+    eliminarCategoria(categoria:categoriaUpdate):categoria
+    eliminarIngTipo(ing_tipo:ing_tipoUpdate):ing_tipo
+    eliminarIngrediente(ingrediente:ingredienteUpdate):ingrediente
+    eliminarReceta(receta:recetaUpdate):receta
+    eliminarComentario(comentario:comentarioUpdate):comentario
+
+}
+
 type usuario {
     usu_id: Int!,
     usu_nickname: String,
@@ -140,7 +152,7 @@ type ingredienteExtra{
 }
 
 type instruccionExtra{
-    ing_id: Int!,
+    ins_id: Int!,
     rec_id: Int,
     ins_numpaso: String,
     ins_descripcion: String,
@@ -158,7 +170,7 @@ type reaccionExtra{
 type rec_catExtra{
     rec_cat_id: Int!,
     rec_id: Int,
-    cat_id: rec_cat_estado: Boolean
+    cat_id: Boolean
 }
 
 type recetaExtra{
@@ -177,7 +189,17 @@ type usuarioExtra{
     usu_nombre: String,
     usu_apellido: String,
     usu_clave: String,
-    usu_estado: Bollean,
+    usu_estado: Boolean,
+    usu_imagen: String,
+    usu_correo: String
+}
+
+input usuarioInput{
+    usu_nickname: String,
+    usu_nombre: String,
+    usu_apellido: String,
+    usu_clave: String,
+    usu_estado: Boolean,
     usu_imagen: String,
     usu_correo: String
 }
@@ -231,7 +253,7 @@ input ingredienteUpdate{
 }
 
 input instruccionUpdate{
-    ing_id: Int!,
+    ins_id: Int!,
     rec_id: Int,
     ins_numpaso: String,
     ins_descripcion: String,
@@ -249,7 +271,7 @@ input reaccionUpdate{
 input rec_catUpdate{
     rec_cat_id: Int!,
     rec_id: Int,
-    cat_id: rec_cat_estado: Boolean
+    cat_id: Boolean
 }
 
 input recetaUpdate{
@@ -268,7 +290,7 @@ input usuarioUpdate{
     usu_nombre: String,
     usu_apellido: String,
     usu_clave: String,
-    usu_estado: Bollean,
+    usu_estado: Boolean,
     usu_imagen: String,
     usu_correo: String
 }
