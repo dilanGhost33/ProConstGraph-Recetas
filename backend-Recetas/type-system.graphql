@@ -9,6 +9,20 @@ type Query {
     recetas(name:String):[receta]
 }
 
+type Mutation{
+    ActualizarComentario(comentario: comentarioUpdate): comentarioExtra
+    ActualizarCategoria(categoria: categoriaUpdate): categoriaExtra
+    ActualizarReceta_Comentario(com_rec: com_recUpdate): com_recExtra
+    ActualizarActualizarDetalle_Receta(dec_receta: dec_recetaUpdate): dec_recetaExtra
+    ActualizarActualizarDificultad(dificultad: dificultadUpdate): dificultadExtra
+    ActualizarIngrediente_Tipo(ing_tipo: ing_tipoUpdate): ing_tipoExtra
+    ActualizarIngrediente(ingrediente: ingredienteUpdate): ingredienteExtra
+    ActualizarInstruccion(instruccion: instruccionUpdate): instruccionExtra
+    ActualizarReaccion(reaccion: reaccionUpdate): reaccionExtra
+    ActualizarReceta(receta: recetaUpdate): recetaExtra
+    ActualizarUsuario(usuario: usuarioUpdate): usuarioExtra
+}
+
 type usuario {
     usu_id: Int!,
     usu_nickname: String,
