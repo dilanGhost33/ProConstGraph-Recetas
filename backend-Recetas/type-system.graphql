@@ -11,6 +11,9 @@ type Query {
 
 type Mutation{
     createUsuario(usuario:usuarioInput):usuario
+    createReaccion(reaccion:reaccionInput):reaccion
+    createComentario(comentario:comentarioInput):comentario
+    createCategoria(categoria:categoriaInput):categoria
 
     eliminarUsuario(usuario:usuarioUpdate):usuario
     eliminarCategoria(categoria:categoriaUpdate):categoria
@@ -18,7 +21,9 @@ type Mutation{
     eliminarIngrediente(ingrediente:ingredienteUpdate):ingrediente
     eliminarReceta(receta:recetaUpdate):receta
     eliminarComentario(comentario:comentarioUpdate):comentario
-
+    eliminarRecetaCategoria(rec_cat:rec_catUpdate):rec_catExtra
+    eliminarReaccion(reaccion:reaccionUpdate):reaccion
+    eliminarDetalleReceta(detalle_receta:dec_recetaUpdate):detalle_receta
 }
 
 type usuario {
@@ -61,7 +66,7 @@ type detalle_receta {
     det_rec_id: Int!,
     det_rec_cantidad: Float,
     det_rec_unidad: String,
-    det_rec_estado: Boolean,
+    det_rec_estado: String,
     ingrediente: ingrediente
 }
 
@@ -170,7 +175,8 @@ type reaccionExtra{
 type rec_catExtra{
     rec_cat_id: Int!,
     rec_id: Int,
-    cat_id: Boolean
+    cat_id:Int,
+    rec_cat_estado: Boolean
 }
 
 type recetaExtra{
@@ -204,6 +210,21 @@ input usuarioInput{
     usu_correo: String
 }
 
+input reaccionInput{
+    usu_id: Int,
+    com_id: Int,
+    rea_like: Boolean
+}
+
+input comentarioInput{
+    usu_id: Int,
+    com_descripcion: String
+}
+
+input categoriaInput {
+    cat_nombre: String
+}
+
 input comentarioUpdate{
     com_id: Int!,
     usu_id: Int,
@@ -230,7 +251,7 @@ input dec_recetaUpdate{
     ing_id: Int,
     det_rec_cantidad: Int,
     det_rec_unidad: String,
-    det_rec_estado: Boolean
+    det_rec_estado: String
 }
 
 input dificultadUpdate{
@@ -271,7 +292,8 @@ input reaccionUpdate{
 input rec_catUpdate{
     rec_cat_id: Int!,
     rec_id: Int,
-    cat_id: Boolean
+    cat_id: Int,
+    rec_estado: Boolean
 }
 
 input recetaUpdate{

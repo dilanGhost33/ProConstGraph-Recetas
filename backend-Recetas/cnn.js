@@ -4,7 +4,7 @@ const config={
     port:'5432',
     database:'recetas',
     user:'postgres',
-    password:'password'
+    password:'Scorpion246'
 }
 
 const pgp=pgPromise({})

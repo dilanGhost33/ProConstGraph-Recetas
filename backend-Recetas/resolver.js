@@ -91,6 +91,33 @@ const recetasResolver = {
                                                 usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo ])
                 return resut
             }
+        },async createReaccion(root, { reaccion }) {
+            if (reaccion == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO reacion (usu_id, com_id, rea_like, rea_estado) 
+                             VALUES ($1, $2, $3, true) returning*;`
+                const resut = await db.one(sql, [reaccion.usu_id, reaccion.com_id, reaccion.rea_like])
+                return resut
+            }
+        },
+        async createComentario(root, { comentario }) {
+            if (comentario == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO comentario (usu_id, com_descripcion, com_estado) VALUES ($1, $2, true) returning*;`
+                const resut = await db.one(sql, [comentario.usu_id, comentario.com_descripcion])
+                return resut
+            }
+        },
+        async createCategoria(root, { categoria }) {
+            if (categoria == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO categoria (cat_nombre, cat_estado) VALUES ($1,true) returning*;`
+                const resut = await db.one(sql, [categoria.cat_nombre])
+                return resut
+            }
         },
         async eliminarUsuario(root, { usuario }) {
             if (usuario == undefined)
@@ -145,7 +172,17 @@ const recetasResolver = {
                 const result = await db.one(sql, [comentario.com_id])
                 return result
             }
+        },
+        async eliminarDetalleReceta(root, { detalle_receta }) {
+            if (detalle_receta == undefined)
+                return null
+            else {
+                const sql = `UPDATE det_receta SET det_rec_estado='false' WHERE det_rec_id=$1 returning*;`
+                const result = await db.one(sql, [detalle_receta.det_rec_id])
+                return result
+            }
         }
+        
     }
 }
 
