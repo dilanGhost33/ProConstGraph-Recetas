@@ -9,6 +9,20 @@ type Query {
     recetas(name:String):[receta]
 }
 
+type Mutation{
+    ActualizarComentario(comentario: comentarioUpdate): comentarioExtra
+    ActualizarCategoria(categoria: categoriaUpdate): categoriaExtra
+    ActualizarReceta_Comentario(com_rec: com_recUpdate): com_recExtra
+    ActualizarDetalle_Receta(det_receta: det_recetaUpdate): det_recetaExtra
+    ActualizarDificultad(dificultad: dificultadUpdate): dificultadExtra
+    ActualizarIngrediente_Tipo(ing_tipo: ing_tipoUpdate): ing_tipoExtra
+    ActualizarIngrediente(ingrediente: ingredienteUpdate): ingredienteExtra
+    ActualizarInstruccion(instruccion: instruccionUpdate): instruccionExtra
+    ActualizarReaccion(reaccion: reaccionUpdate): reaccionExtra
+    ActualizarReceta(receta: recetaUpdate): recetaExtra
+    ActualizarUsuario(usuario: usuarioUpdate): usuarioExtra
+}
+
 type usuario {
     usu_id: Int!,
     usu_nickname: String,
@@ -87,4 +101,190 @@ type receta {
     detalles: [detalle_receta],
     instrucciones: [instruccion],
     comentarios: [comentario]
+}
+
+#Updates
+
+type comentarioExtra{
+    com_id: Int!,
+    usu_id: Int,
+    com_descripcion: String,
+    com_estado: Boolean
+}
+
+type categoriaExtra{
+    cat_id: Int!,
+    cat_nombre: String,
+    cat_estado: Boolean
+}
+
+type com_recExtra{
+    com_rec_id: Int!,
+    rec_id: Int,
+    com_id: Int,
+    com_rec_estado: Boolean
+}
+
+type det_recetaExtra{
+    det_rec_id: Int!,
+    rec_id: Int,
+    ing_id: Int,
+    det_rec_cantidad: Int,
+    det_rec_unidad: String,
+    det_rec_estado: Boolean
+}
+
+type dificultadExtra{
+    dif_id: Int!,
+    dif_nombre: String
+}
+
+type ing_tipoExtra{
+    tip_id: Int!,
+    tip_nombre: String,
+    tip_estado: Boolean
+}
+
+type ingredienteExtra{
+    ing_id: Int!,
+    tip_id: Int,
+    ing_nombre: String,
+    ing_imagen: String,
+    ing_estado: Boolean
+}
+
+type instruccionExtra{
+    ing_id: Int!,
+    rec_id: Int,
+    ins_numpaso: String,
+    ins_descripcion: String,
+    ins_estado: Boolean
+}
+
+type reaccionExtra{
+    rea_id: Int!,
+    usu_id: Int,
+    com_id: Int,
+    rea_like: Boolean,
+    rea_estado: Boolean
+}
+
+type rec_catExtra{
+    rec_cat_id: Int!,
+    rec_id: Int,
+    cat_id: Int,
+    rec_cat_estado: Boolean
+}
+
+type recetaExtra{
+    rec_id: Int!,
+    usu_id: Int,
+    dif_id: Int,
+    rec_imagen: String,
+    rec_nombre: String,
+    rec_estado: Boolean,
+    rec_tiempo: Int 
+}
+
+type usuarioExtra{
+    usu_id: Int!,
+    usu_nickname: String,
+    usu_nombre: String,
+    usu_apellido: String,
+    usu_clave: String,
+    usu_estado: Boolean,
+    usu_imagen: String,
+    usu_correo: String
+}
+
+input comentarioUpdate{
+    com_id: Int!,
+    usu_id: Int,
+    com_descripcion: String,
+    com_estado: Boolean
+}
+
+input categoriaUpdate{
+    cat_id: Int!,
+    cat_nombre: String,
+    cat_estado: Boolean
+}
+
+input com_recUpdate{
+    com_rec_id: Int!,
+    rec_id: Int,
+    com_id: Int,
+    com_rec_estado: Boolean
+}
+
+input det_recetaUpdate{
+    det_rec_id: Int!,
+    rec_id: Int,
+    ing_id: Int,
+    det_rec_cantidad: Int,
+    det_rec_unidad: String,
+    det_rec_estado: Boolean
+}
+
+input dificultadUpdate{
+    dif_id: Int!,
+    dif_nombre: String
+}
+
+input ing_tipoUpdate{
+    tip_id: Int!,
+    tip_nombre: String,
+    tip_estado: Boolean
+}
+
+input ingredienteUpdate{
+    ing_id: Int!,
+    tip_id: Int,
+    ing_nombre: String,
+    ing_imagen: String,
+    ing_estado: Boolean
+}
+
+input instruccionUpdate{
+    ing_id: Int!,
+    rec_id: Int,
+    ins_numpaso: String,
+    ins_descripcion: String,
+    ins_estado: Boolean
+}
+
+input reaccionUpdate{
+    rea_id: Int!,
+    usu_id: Int,
+    com_id: Int,
+    rea_like: Boolean,
+    rea_estado: Boolean
+}
+
+input rec_catUpdate{
+    rec_cat_id: Int!,
+    rec_id: Int,
+    cat_id: Int,
+    rec_cat_estado: Boolean
+}
+
+input recetaUpdate{
+    rec_id: Int!,
+    usu_id: Int,
+    dif_id: Int,
+    rec_imagen: String,
+    rec_nombre: String,
+    rec_estado: Boolean,
+    rec_tiempo: Int 
+}
+
+input usuarioUpdate{
+    usu_id: Int!,
+    usu_nickname: String,
+    usu_nombre: String,
+    usu_apellido: String,
+    usu_clave: String,
+    usu_estado: Boolean,
+    usu_imagen: String,
+    usu_correo: String
 }
