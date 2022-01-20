@@ -35,7 +35,7 @@ type Mutation{
     eliminarComentario(comentario:comentarioUpdate):comentario
     eliminarRecetaCategoria(rec_cat:rec_catUpdate):rec_catExtra
     eliminarReaccion(reaccion:reaccionUpdate):reaccion
-    eliminarDetalleReceta(detalle_receta:dec_recetaUpdate):detalle_receta
+    eliminarDetalleReceta(detalle_receta:det_recetaUpdate):detalle_receta
 }
 
 type usuario {
