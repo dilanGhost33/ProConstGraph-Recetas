@@ -11,9 +11,9 @@ const recetasResolver = {
         },
         async categorias(root, { name }){
             if (name == undefined) {
-                return await db.any(`select * from categoria where cat_estado='true' order by cat_id asc`)
+                return await db.any(`select * from categoria where cat_estado=true order by cat_id asc`)
             } else {
-                return await db.any(`select * from categoria where cat_estado='true' and cat_nombre=$1`, [name])
+                return await db.any(`select * from categoria where cat_estado=true and cat_nombre=$1`, [name])
             }
         },
         async dificultades(root, { name }){
@@ -57,7 +57,7 @@ const recetasResolver = {
         },
         async categorias(receta) {
             return db.any(`select * from categoria ca inner join rec_cat rc on rc.cat_id = ca.cat_id
-            where rc.rec_id=$1 and rc.rec_cat_estado='true'`, [receta.rec_id])
+            where rc.rec_id=$1 and rc.rec_cat_estado=true`, [receta.rec_id])
         },
         async detalles(receta) {
             return db.any(`select * from det_receta where rec_id=$1`, [receta.rec_id])

@@ -23,7 +23,7 @@ type usuario {
 type categoria {
     cat_id: Int!,
     cat_nombre: String,
-    cat_estado: String
+    cat_estado: Boolean
 }
 
 type dificultad {
