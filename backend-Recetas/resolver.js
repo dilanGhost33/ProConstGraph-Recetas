@@ -2,35 +2,35 @@ const { db } = require("./cnn")
 
 const blogResolver={
     Query: {
-        async usuarios(root, { nickname }){
+        async usuarios(root, { nickname }) {
             if (nickname == undefined) {
                 return await db.any(`select * from usuario where usu_estado=true order by usu_id asc`)
             } else {
                 return await db.any(`select * from usuario where usu_estado=true and usu_nickname=$1`, [nickname])
             }
         },
-        async categorias(root, { name }){
+        async categorias(root, { name }) {
             if (name == undefined) {
                 return await db.any(`select * from categoria where cat_estado='true' order by cat_id asc`)
             } else {
                 return await db.any(`select * from categoria where cat_estado='true' and cat_nombre=$1`, [name])
             }
         },
-        async dificultades(root, { name }){
+        async dificultades(root, { name }) {
             if (name == undefined) {
                 return await db.any(`select * from dificultad order by dif_id asc`)
             } else {
                 return await db.any(`select * from dificultad where and dif_nombre=$1`, [name])
             }
         },
-        async ing_tipos(root, { name }){
+        async ing_tipos(root, { name }) {
             if (name == undefined) {
                 return await db.any(`select * from ing_tipo where tip_estado=true order by tip_id asc`)
             } else {
                 return await db.any(`select * from ing_tipo where and tip_nombre=$1`, [name])
             }
         },
-        async ingredientes(root, { name }){
+        async ingredientes(root, { name }) {
             if (name == undefined) {
                 return await db.any(`select * from ingrediente where ing_estado=true order by ing_id asc`)
             } else {
@@ -80,14 +80,15 @@ const blogResolver={
         async autor(reaccion) {
             return db.one(`select * from usuario where usu_id=$1`, [reaccion.usu_id])
         }
-    },Mutation:{
-        async ActualizarComentario(root,{comentario}){
-            if(comentario==undefined)
+    }, Mutation: {
+        async createUsuario(root, { usuario }) {
+            if (usuario == undefined)
                 return null
-            else{
-                const sql=`update public.comentario set usu_id=$2, com_descripcion=$3, com_estado=$4 
-                where com_id=$1 returning*;`
-                const resut=await db.one(sql,[comentario.com_id, comentario.usu_id, comentario.com_descripcion, comentario.com_estado])
+            else {
+                const sql = `INSERT INTO usuario (usu_nickname, usu_nombre, usu_apellido, usu_clave, usu_estado, usu_imagen, usu_correo ) 
+                             VALUES ($1, $2, $3, $4, true, $5, $6) returning*;`
+                const resut = await db.one(sql, [usuario.usu_nickname, usuario.usu_nombre, usuario.usu_apellido, 
+                                                usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo ])
                 return resut
             }
         },
@@ -140,7 +141,98 @@ const blogResolver={
                 const resut=await db.one(sql,[ingrediente.ing_id,ingrediente.tip_id,ingrediente.ing_nombre,ingrediente.ing_imagen,ingrediente.ing_estado])
                 return resut
             }
+        },async createReaccion(root, { reaccion }) {
+            if (reaccion == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO reacion (usu_id, com_id, rea_like, rea_estado) 
+                             VALUES ($1, $2, $3, true) returning*;`
+                const resut = await db.one(sql, [reaccion.usu_id, reaccion.com_id, reaccion.rea_like])
+                return resut
+            }
+        },
+        async createComentario(root, { comentario }) {
+            if (comentario == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO comentario (usu_id, com_descripcion, com_estado) VALUES ($1, $2, true) returning*;`
+                const resut = await db.one(sql, [comentario.usu_id, comentario.com_descripcion])
+                return resut
+            }
+        },
+        async createCategoria(root, { categoria }) {
+            if (categoria == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO categoria (cat_nombre, cat_estado) VALUES ($1,true) returning*;`
+                const resut = await db.one(sql, [categoria.cat_nombre])
+                return resut
+            }
+        },
+        async eliminarUsuario(root, { usuario }) {
+            if (usuario == undefined)
+                return null
+            else {
+                const sql = `UPDATE usuario SET usu_estado=false WHERE usu_id=$1 returning*;`
+                const result = await db.one(sql, [usuario.usu_id])
+                return result
+            }
+        },
+        async eliminarCategoria(root, { categoria }) {
+            if (categoria == undefined)
+                return null
+            else {
+                const sql = `UPDATE categoria SET cat_estado=false WHERE cat_id=$1 returning*;`
+                const result = await db.one(sql, [categoria.cat_id])
+                return result
+            }
+        },
+        async eliminarIngTipo(root, { ing_tipo }) {
+            if (ing_tipo == undefined)
+                return null
+            else {
+                const sql = `UPDATE ing_tipo SET tip_estado=false WHERE tip_id=$1 returning*;`
+                const result = await db.one(sql, [ing_tipo.tip_id])
+                return result
+            }
+        },
+        async eliminarIngrediente(root, { ingrediente }) {
+            if (ingrediente == undefined)
+                return null
+            else {
+                const sql = `UPDATE ingrediente SET ing_estado=false WHERE ing_id=$1 returning*;`
+                const result = await db.one(sql, [ingrediente.ing_id])
+                return result
+            }
+        },
+        async eliminarReceta(root, { receta }) {
+            if (receta == undefined)
+                return null
+            else {
+                const sql = `UPDATE receta SET rec_estado=false WHERE rec_id=$1 returning*;`
+                const result = await db.one(sql, [receta.rec_id])
+                return result
+            }
+        },
+        async eliminarComentario(root, { comentario }) {
+            if (comentario == undefined)
+                return null
+            else {
+                const sql = `UPDATE comentario SET com_estado=false WHERE com_id=$1 returning*;`
+                const result = await db.one(sql, [comentario.com_id])
+                return result
+            }
+        },
+        async eliminarDetalleReceta(root, { detalle_receta }) {
+            if (detalle_receta == undefined)
+                return null
+            else {
+                const sql = `UPDATE det_receta SET det_rec_estado='false' WHERE det_rec_id=$1 returning*;`
+                const result = await db.one(sql, [detalle_receta.det_rec_id])
+                return result
+            }
         }
+        
     }
 }
 

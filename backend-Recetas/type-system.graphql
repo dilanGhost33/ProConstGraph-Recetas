@@ -10,17 +10,20 @@ type Query {
 }
 
 type Mutation{
-    ActualizarComentario(comentario: comentarioUpdate): comentarioExtra
-    ActualizarCategoria(categoria: categoriaUpdate): categoriaExtra
-    ActualizarReceta_Comentario(com_rec: com_recUpdate): com_recExtra
-    ActualizarDetalle_Receta(det_receta: det_recetaUpdate): det_recetaExtra
-    ActualizarDificultad(dificultad: dificultadUpdate): dificultadExtra
-    ActualizarIngrediente_Tipo(ing_tipo: ing_tipoUpdate): ing_tipoExtra
-    ActualizarIngrediente(ingrediente: ingredienteUpdate): ingredienteExtra
-    ActualizarInstruccion(instruccion: instruccionUpdate): instruccionExtra
-    ActualizarReaccion(reaccion: reaccionUpdate): reaccionExtra
-    ActualizarReceta(receta: recetaUpdate): recetaExtra
-    ActualizarUsuario(usuario: usuarioUpdate): usuarioExtra
+    createUsuario(usuario:usuarioInput):usuario
+    createReaccion(reaccion:reaccionInput):reaccion
+    createComentario(comentario:comentarioInput):comentario
+    createCategoria(categoria:categoriaInput):categoria
+
+    eliminarUsuario(usuario:usuarioUpdate):usuario
+    eliminarCategoria(categoria:categoriaUpdate):categoria
+    eliminarIngTipo(ing_tipo:ing_tipoUpdate):ing_tipo
+    eliminarIngrediente(ingrediente:ingredienteUpdate):ingrediente
+    eliminarReceta(receta:recetaUpdate):receta
+    eliminarComentario(comentario:comentarioUpdate):comentario
+    eliminarRecetaCategoria(rec_cat:rec_catUpdate):rec_catExtra
+    eliminarReaccion(reaccion:reaccionUpdate):reaccion
+    eliminarDetalleReceta(detalle_receta:dec_recetaUpdate):detalle_receta
 }
 
 type usuario {
@@ -63,7 +66,7 @@ type detalle_receta {
     det_rec_id: Int!,
     det_rec_cantidad: Float,
     det_rec_unidad: String,
-    det_rec_estado: Boolean,
+    det_rec_estado: String,
     ingrediente: ingrediente
 }
 
@@ -154,7 +157,7 @@ type ingredienteExtra{
 }
 
 type instruccionExtra{
-    ing_id: Int!,
+    ins_id: Int!,
     rec_id: Int,
     ins_numpaso: String,
     ins_descripcion: String,
@@ -197,6 +200,31 @@ type usuarioExtra{
     usu_correo: String
 }
 
+input usuarioInput{
+    usu_nickname: String,
+    usu_nombre: String,
+    usu_apellido: String,
+    usu_clave: String,
+    usu_estado: Boolean,
+    usu_imagen: String,
+    usu_correo: String
+}
+
+input reaccionInput{
+    usu_id: Int,
+    com_id: Int,
+    rea_like: Boolean
+}
+
+input comentarioInput{
+    usu_id: Int,
+    com_descripcion: String
+}
+
+input categoriaInput {
+    cat_nombre: String
+}
+
 input comentarioUpdate{
     com_id: Int!,
     usu_id: Int,
@@ -223,7 +251,7 @@ input det_recetaUpdate{
     ing_id: Int,
     det_rec_cantidad: Int,
     det_rec_unidad: String,
-    det_rec_estado: Boolean
+    det_rec_estado: String
 }
 
 input dificultadUpdate{
@@ -246,7 +274,7 @@ input ingredienteUpdate{
 }
 
 input instruccionUpdate{
-    ing_id: Int!,
+    ins_id: Int!,
     rec_id: Int,
     ins_numpaso: String,
     ins_descripcion: String,
