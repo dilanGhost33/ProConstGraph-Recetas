@@ -27,15 +27,16 @@ type Mutation{
     ActualizarReceta(receta: recetaUpdate): recetaExtra
     ActualizarUsuario(usuario: usuarioUpdate): usuarioExtra
 
-    eliminarUsuario(usuario:usuarioUpdate):usuario
-    eliminarCategoria(categoria:categoriaUpdate):categoria
-    eliminarIngTipo(ing_tipo:ing_tipoUpdate):ing_tipo
-    eliminarIngrediente(ingrediente:ingredienteUpdate):ingrediente
-    eliminarReceta(receta:recetaUpdate):receta
-    eliminarComentario(comentario:comentarioUpdate):comentario
-    eliminarRecetaCategoria(rec_cat:rec_catUpdate):rec_catExtra
-    eliminarReaccion(reaccion:reaccionUpdate):reaccion
-    eliminarDetalleReceta(detalle_receta:det_recetaUpdate):detalle_receta
+    eliminarUsuario(usu_id:Int):String
+    eliminarCategoria(cat_id:Int):String
+    eliminarIngTipo(tip_id:Int):String
+    eliminarIngrediente(ing_id:Int):String
+    eliminarReceta(rec_id:Int):String
+    eliminarComentario(rec_id:Int, usu_id:Int):String
+    eliminarDetalleReceta(rec_id:Int, ing_id:Int):String
+    eliminarRecetaCategoria(rec_id:Int, cat_id:Int):String
+    eliminarReaccion(usu_id:Int, com_id:Int):String
+    eliminarInstruccion(rec_id:Int, ins_numpaso:String):String
 }
 
 type usuario {
@@ -230,6 +231,7 @@ input reaccionInput{
 
 input comentarioInput{
     usu_id: Int,
+    rec_id: Int,
     com_descripcion: String
 }
 

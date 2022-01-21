@@ -118,15 +118,15 @@ const recetasResolver = {
             else {
                 const sql = `INSERT INTO usuario (usu_nickname, usu_nombre, usu_apellido, usu_clave, usu_estado, usu_imagen, usu_correo ) 
                              VALUES ($1, $2, $3, $4, true, $5, $6) returning*;`
-                const resut = await db.one(sql, [usuario.usu_nickname, usuario.usu_nombre, usuario.usu_apellido, 
-                                                usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo ])
+                const resut = await db.one(sql, [usuario.usu_nickname, usuario.usu_nombre, usuario.usu_apellido,
+                usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo])
                 return resut
             }
-        },async createReaccion(root, { reaccion }) {
+        }, async createReaccion(root, { reaccion }) {
             if (reaccion == undefined)
                 return null
             else {
-                const sql = `INSERT INTO reacion (usu_id, com_id, rea_like, rea_estado) 
+                const sql = `INSERT INTO reaccion (usu_id, com_id, rea_like, rea_estado) 
                              VALUES ($1, $2, $3, true) returning*;`
                 const resut = await db.one(sql, [reaccion.usu_id, reaccion.com_id, reaccion.rea_like])
                 return resut
@@ -136,8 +136,8 @@ const recetasResolver = {
             if (comentario == undefined)
                 return null
             else {
-                const sql = `INSERT INTO comentario (usu_id, com_descripcion, com_estado) VALUES ($1, $2, true) returning*;`
-                const resut = await db.one(sql, [comentario.usu_id, comentario.com_descripcion])
+                const sql = `INSERT INTO comentario (usu_id, rec_id, com_descripcion, com_estado) VALUES ($1, $2, $3, true) returning*;`
+                const resut = await db.one(sql, [comentario.usu_id, comentario.rec_id, comentario.com_descripcion])
                 return resut
             }
         },
@@ -150,127 +150,161 @@ const recetasResolver = {
                 return resut
             }
         },
-        async ActualizarComentario(root,{comentario}){
-            if(comentario==undefined)
-                return null
-            else{
-                const sql=`update public.comentario set usu_id=$2, com_descripcion=$3, com_estado=$4 
-                where com_id=$1 returning*;`
-                const resut=await db.one(sql,[comentario.com_id, comentario.usu_id, comentario.com_descripcion, comentario.com_estado])
-                return resut
-            }
-        },
-        async ActualizarCategoria(root,{categoria}){
-            if(categoria==undefined)
-                return null
-            else{
-                const sql=`update public.categoria set cat_nombre=$2, cat_estado=$3
-                where cat_id=$1 returning*;`
-                const resut=await db.one(sql,[categoria.cat_id, categoria.cat_nombre, categoria.cat_estado])
-                return resut
-            }
-        },
-        async ActualizarReceta_Comentario(root,{com_rec}){
-            if(com_rec==undefined)
-                return null
-            else{
-                const sql=`update public.com_rec set rec_id=$2, com_id=$3, com_rec_estado=$4
-                where com_rec_id=$1 returning*;`
-                const resut=await db.one(sql,[com_rec.com_rec_id, com_rec.rec_id,com_rec.com_id,com_rec.com_rec_estado])
-                return resut
-            }
-        },
-        async ActualizarDetalle_Receta(root,{det_receta}){
-            if(det_receta==undefined)
-                return null
-            else{
-                const sql=`update public.det_receta set rec_id=$2, ing_id=$3, det_rec_cantidad=$4, det_rec_unidad=$5, det_rec_estado=$6
-                where det_rec_id=$1 returning*;`
-                const resut=await db.one(sql,[det_receta.det_rec_id, det_receta.rec_id, det_receta.ing_id,det_receta.det_rec_cantidad,det_receta.det_rec_unidad,det_receta.det_rec_estado])
-                return resut
-            }
-        },
-        async  ActualizarDificultad(root,{dificultad}){
-            if(dificultad==undefined)
-                return null
-            else{
-                const sql=`update public.dificultad set dif_nombre=$2
-                where dif_id=$1 returning*;`
-                const resut=await db.one(sql,[dificultad.dif_id,dificultad.dif_nombre])
-                return resut
-            }
-        },
-        async  ActualizarIngrediente(root,{ingrediente}){
-            if(ingrediente==undefined)
-                return null
-            else{
-                const sql=`update public.ingrediente set tip_id=$2,ing_nombre=$3,ing_imagen=$4,ing_estado=$5
-                where ing_id=$1 returning*;`
-                const resut=await db.one(sql,[ingrediente.ing_id,ingrediente.tip_id,ingrediente.ing_nombre,ingrediente.ing_imagen,ingrediente.ing_estado])
-                return resut
-            }
-        },
-        async eliminarUsuario(root, { usuario }) {
-            if (usuario == undefined)
-                return null
-            else {
-                const sql = `UPDATE usuario SET usu_estado=false WHERE usu_id=$1 returning*;`
-                const result = await db.one(sql, [usuario.usu_id])
-                return result
-            }
-        },
-        async eliminarCategoria(root, { categoria }) {
-            if (categoria == undefined)
-                return null
-            else {
-                const sql = `UPDATE categoria SET cat_estado=false WHERE cat_id=$1 returning*;`
-                const result = await db.one(sql, [categoria.cat_id])
-                return result
-            }
-        },
-        async eliminarIngTipo(root, { ing_tipo }) {
-            if (ing_tipo == undefined)
-                return null
-            else {
-                const sql = `UPDATE ing_tipo SET tip_estado=false WHERE tip_id=$1 returning*;`
-                const result = await db.one(sql, [ing_tipo.tip_id])
-                return result
-            }
-        },
-        async eliminarIngrediente(root, { ingrediente }) {
-            if (ingrediente == undefined)
-                return null
-            else {
-                const sql = `UPDATE ingrediente SET ing_estado=false WHERE ing_id=$1 returning*;`
-                const result = await db.one(sql, [ingrediente.ing_id])
-                return result
-            }
-        },
-        async eliminarReceta(root, { receta }) {
-            if (receta == undefined)
-                return null
-            else {
-                const sql = `UPDATE receta SET rec_estado=false WHERE rec_id=$1 returning*;`
-                const result = await db.one(sql, [receta.rec_id])
-                return result
-            }
-        },
-        async eliminarComentario(root, { comentario }) {
+        async ActualizarComentario(root, { comentario }) {
             if (comentario == undefined)
                 return null
             else {
-                const sql = `UPDATE comentario SET com_estado=false WHERE com_id=$1 returning*;`
-                const result = await db.one(sql, [comentario.com_id])
-                return result
+                const sql = `update public.comentario set usu_id=$2, com_descripcion=$3, com_estado=$4 
+                where com_id=$1 returning*;`
+                const resut = await db.one(sql, [comentario.com_id, comentario.usu_id, comentario.com_descripcion, comentario.com_estado])
+                return resut
             }
         },
-        async eliminarDetalleReceta(root, { detalle_receta }) {
-            if (detalle_receta == undefined)
+        async ActualizarCategoria(root, { categoria }) {
+            if (categoria == undefined)
                 return null
             else {
-                const sql = `UPDATE det_receta SET det_rec_estado='false' WHERE det_rec_id=$1 returning*;`
-                const result = await db.one(sql, [detalle_receta.det_rec_id])
-                return result
+                const sql = `update public.categoria set cat_nombre=$2, cat_estado=$3
+                where cat_id=$1 returning*;`
+                const resut = await db.one(sql, [categoria.cat_id, categoria.cat_nombre, categoria.cat_estado])
+                return resut
+            }
+        },
+        async ActualizarReceta_Comentario(root, { com_rec }) {
+            if (com_rec == undefined)
+                return null
+            else {
+                const sql = `update public.com_rec set rec_id=$2, com_id=$3, com_rec_estado=$4
+                where com_rec_id=$1 returning*;`
+                const resut = await db.one(sql, [com_rec.com_rec_id, com_rec.rec_id, com_rec.com_id, com_rec.com_rec_estado])
+                return resut
+            }
+        },
+        async ActualizarDetalle_Receta(root, { det_receta }) {
+            if (det_receta == undefined)
+                return null
+            else {
+                const sql = `update public.det_receta set rec_id=$2, ing_id=$3, det_rec_cantidad=$4, det_rec_unidad=$5, det_rec_estado=$6
+                where det_rec_id=$1 returning*;`
+                const resut = await db.one(sql, [det_receta.det_rec_id, det_receta.rec_id, det_receta.ing_id, det_receta.det_rec_cantidad, det_receta.det_rec_unidad, det_receta.det_rec_estado])
+                return resut
+            }
+        },
+        async ActualizarDificultad(root, { dificultad }) {
+            if (dificultad == undefined)
+                return null
+            else {
+                const sql = `update public.dificultad set dif_nombre=$2
+                where dif_id=$1 returning*;`
+                const resut = await db.one(sql, [dificultad.dif_id, dificultad.dif_nombre])
+                return resut
+            }
+        },
+        async ActualizarIngrediente(root, { ingrediente }) {
+            if (ingrediente == undefined)
+                return null
+            else {
+                const sql = `update public.ingrediente set tip_id=$2,ing_nombre=$3,ing_imagen=$4,ing_estado=$5
+                where ing_id=$1 returning*;`
+                const resut = await db.one(sql, [ingrediente.ing_id, ingrediente.tip_id, ingrediente.ing_nombre, ingrediente.ing_imagen, ingrediente.ing_estado])
+                return resut
+            }
+        },
+        async eliminarUsuario(root, { usu_id }) {
+            try {
+                const sql = `UPDATE usuario SET usu_estado=false WHERE usu_id=$1 returning*;`
+                await db.one(sql, [usu_id])
+                return "Usuario eliminado"
+            } catch (error) {
+                
+            } 
+        },
+        async eliminarCategoria(root, { cat_id }) {
+            try {
+                const sql = `UPDATE categoria SET cat_estado=false WHERE cat_id=$1 returning*;`
+                await db.one(sql, [cat_id])
+                return "Categoria eliminada"
+            } catch (error) {
+                return error.message
+            }  
+        },
+        async eliminarIngTipo(root, { tip_id }) {
+            try {
+                const sql = `UPDATE ing_tipo SET tip_estado=false WHERE tip_id=$1 returning*;`
+                await db.one(sql, [tip_id])
+                return "Tipo eliminado"
+            } catch (error) {
+                return error.message
+            }
+        },
+        async eliminarIngrediente(root, { ing_id }) {
+            try {
+                const sql = `UPDATE ingrediente SET ing_estado=false WHERE ing_id=$1 returning*;`
+                await db.one(sql, [ing_id])
+                return "Ingrediente eliminado"
+            } catch (error) {
+                return error.message
+            }
+        },
+        async eliminarReceta(root, { rec_id }) {
+            try {
+                const sql = `UPDATE receta SET rec_estado=false WHERE rec_id=$1 returning*;`
+                await db.one(sql, [rec_id])
+                return "Receta eliminada"
+                
+            } catch (error) {
+                return error.message
+            }  
+        },
+        async eliminarComentario(root, { rec_id, usu_id }) {
+            try {
+                const sql = `UPDATE comentario SET com_estado=false WHERE rec_id=$1 AND usu_id=$2 returning*;`
+                await db.one(sql, [rec_id, usu_id])
+                return "Comentario eliminado"
+            } catch (error) {
+                return error.message
+            }
+                
+            
+        },
+        async eliminarDetalleReceta(root, { rec_id, ing_id }) {
+            try {
+                const sql = `UPDATE det_receta SET det_rec_estado=false WHERE rec_id=$1 AND ing_id=$2 returning*;`
+                await db.one(sql, [rec_id, ing_id])
+                return "Ingrediente eliminado de la receta"
+            } catch (error) {
+                return error.message
+
+            }
+        },
+        async eliminarRecetaCategoria(root, { rec_id, cat_id }) {
+            try {
+                const sql = `UPDATE rec_cat SET rec_cat_estado=false WHERE rec_id=$1 AND cat_id=$2 returning*;`
+                await db.one(sql, [rec_id, cat_id])
+                return "Categoria eliminada de la receta"
+            } catch (error) {
+                return error.message
+
+            }
+        },
+        async eliminarReaccion(root, { usu_id, com_id }) {
+            try {
+                const sql = `UPDATE reaccion SET rea_estado=false WHERE usu_id=$1 AND com_id=$2 returning*;`
+                await db.one(sql, [usu_id, com_id])
+                return "Reaccion eliminada"
+            } catch (error) {
+                return error.message
+
+            }
+        },
+        async eliminarInstruccion(root, { rec_id,ins_numpaso }) {
+            try {
+                const sql = `UPDATE instruccion SET ins_estado=false WHERE rec_id=$1 AND ins_numpaso=$2 returning*;`
+                await db.one(sql, [rec_id,ins_numpaso])
+                return "Instruccion eliminada"
+            } catch (error) {
+                return error.message
+
             }
         }
     }
