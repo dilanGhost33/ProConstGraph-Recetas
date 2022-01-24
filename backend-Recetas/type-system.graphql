@@ -9,13 +9,16 @@ type Query {
     recetas(name:String):[receta]
 }
 
-<<<<<<< HEAD
-=======
 type Mutation{
     createUsuario(usuario:usuarioInput):usuario
     createReaccion(reaccion:reaccionInput):reaccion
     createComentario(comentario:comentarioInput):comentario
     createCategoria(categoria:categoriaInput):categoria
+    createReceta(receta:recetaInput):receta
+    createIngrediente(ingrediente:ingredienteInput):ingrediente
+    createTipo(tipo:tipoInput):tipo
+    createInstruccion(instruccion:instruccionInput):instruccion
+    
     
     ActualizarComentario(comentario: comentarioUpdate): comentarioExtra
     ActualizarCategoria(categoria: categoriaUpdate): categoriaExtra
@@ -40,7 +43,6 @@ type Mutation{
     eliminarDetalleReceta(detalle_receta:det_recetaUpdate):detalle_receta
 }
 
->>>>>>> origin
 type usuario {
     usu_id: Int!,
     usu_nickname: String,
@@ -81,11 +83,7 @@ type detalle_receta {
     det_rec_id: Int!,
     det_rec_cantidad: Float,
     det_rec_unidad: String,
-<<<<<<< HEAD
-    det_rec_estado: Boolean,
-=======
     det_rec_estado: String,
->>>>>>> origin
     ingrediente: ingrediente
 }
 
@@ -123,9 +121,6 @@ type receta {
     detalles: [detalle_receta],
     instrucciones: [instruccion],
     comentarios: [comentario]
-<<<<<<< HEAD
-}
-=======
 }
 
 #Updates
@@ -231,12 +226,29 @@ input usuarioInput{
     usu_imagen: String,
     usu_correo: String
 }
-
-input reaccionInput{
-    usu_id: Int,
-    com_id: Int,
-    rea_like: Boolean
+input recetaInput{
+    usu_id: String,
+    dif_id: String,
+    rec_nombre: String,
+    rec_imagen: String,
 }
+input recetaInput{
+    usu_id: Int,
+    dif_id: Int,
+    rec_nombre: String,
+    rec_imagen: String,
+}
+
+input ingredienteInput{
+    tip_id: Int,
+    ing_nombre: String,
+    ing_imagen: String,
+}
+
+input tipoInput {
+    tip_nombre: String
+}
+
 
 input comentarioInput{
     usu_id: Int,
@@ -246,6 +258,14 @@ input comentarioInput{
 input categoriaInput {
     cat_nombre: String
 }
+
+input InstruccionInput{
+    rec_id: Int,
+    ins_numpaso: String,
+    ins_descripcion: String
+    }
+
+
 
 input comentarioUpdate{
     com_id: Int!,
@@ -339,4 +359,3 @@ input usuarioUpdate{
     usu_correo: String
 }
 
->>>>>>> origin
