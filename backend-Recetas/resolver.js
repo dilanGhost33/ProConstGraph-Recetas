@@ -118,32 +118,19 @@ const recetasResolver = {
             return db.any(`select * from comentario co inner join com_rec cr on cr.com_id = co.com_id
             where cr.rec_id=$1 and cr.com_rec_estado=true`, [receta.rec_id])
         }
-    },
-    comentario: {
+    }, comentario: {
         async autor(comentario) {
             return db.one(`select * from usuario where usu_id=$1`, [comentario.usu_id])
-    }, Mutation: {
-        async createUsuario(root, { usuario }) {
-            if (usuario == undefined)
-                return null
-            else {
-                const sql = `INSERT INTO usuario (usu_nickname, usu_nombre, usu_apellido, usu_clave, usu_estado, usu_imagen, usu_correo ) 
-                             VALUES ($1, $2, $3, $4, true, $5, $6) returning*;`
-                const resut = await db.one(sql, [usuario.usu_nickname, usuario.usu_nombre, usuario.usu_apellido, 
-                                                usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo ])
-                return resut
-            }
         },
         async reacciones(comentario) {
             return db.any(`select * from reacion where com_id=$1 and rea_estado=true`, [comentario.com_id])
         }
-    },
-    reaccion: {
+    }, reaccion: {
         async autor(reaccion) {
             return db.one(`select * from usuario where usu_id=$1`, [reaccion.usu_id])
         }
-    },
-    Mutation: {
+    },   
+     Mutation: {
         async createReceta(root, {
             receta
         }) {
@@ -204,7 +191,7 @@ const recetasResolver = {
                 const sql = `INSERT INTO usuario (usu_nickname, usu_nombre, usu_apellido, usu_clave, usu_estado, usu_imagen, usu_correo ) 
                              VALUES ($1, $2, $3, $4, true, $5, $6) returning*;`
                 const resut = await db.one(sql, [usuario.usu_nickname, usuario.usu_nombre, usuario.usu_apellido,
-                    usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo
+                usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo
                 ])
                 return resut
             }
@@ -309,8 +296,8 @@ const recetasResolver = {
                 await db.one(sql, [usu_id])
                 return "Usuario eliminado"
             } catch (error) {
-                
-            } 
+
+            }
         },
         async eliminarCategoria(root, { cat_id }) {
             try {
@@ -319,7 +306,7 @@ const recetasResolver = {
                 return "Categoria eliminada"
             } catch (error) {
                 return error.message
-            }  
+            }
         },
         async eliminarIngTipo(root, { tip_id }) {
             try {
@@ -344,10 +331,10 @@ const recetasResolver = {
                 const sql = `UPDATE receta SET rec_estado=false WHERE rec_id=$1 returning*;`
                 await db.one(sql, [rec_id])
                 return "Receta eliminada"
-                
+
             } catch (error) {
                 return error.message
-            }  
+            }
         },
         async eliminarComentario(root, { rec_id, usu_id }) {
             try {
@@ -357,8 +344,8 @@ const recetasResolver = {
             } catch (error) {
                 return error.message
             }
-                
-            
+
+
         },
         async eliminarDetalleReceta(root, { rec_id, ing_id }) {
             try {
@@ -390,10 +377,10 @@ const recetasResolver = {
 
             }
         },
-        async eliminarInstruccion(root, { rec_id,ins_numpaso }) {
+        async eliminarInstruccion(root, { rec_id, ins_numpaso }) {
             try {
                 const sql = `UPDATE instruccion SET ins_estado=false WHERE rec_id=$1 AND ins_numpaso=$2 returning*;`
-                await db.one(sql, [rec_id,ins_numpaso])
+                await db.one(sql, [rec_id, ins_numpaso])
                 return "Instruccion eliminada"
             } catch (error) {
                 return error.message
@@ -402,5 +389,6 @@ const recetasResolver = {
         }
     }
 }
+
 
 module.exports = recetasResolver

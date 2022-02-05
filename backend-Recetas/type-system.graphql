@@ -16,7 +16,7 @@ type Mutation{
     createCategoria(categoria:categoriaInput):categoria
     createReceta(receta:recetaInput):receta
     createIngrediente(ingrediente:ingredienteInput):ingrediente
-    createTipo(tipo:tipoInput):tipo
+    createTipo(tipo:tipoInput):ing_tipo
     createInstruccion(instruccion:instruccionInput):instruccion
     
     
@@ -239,6 +239,11 @@ input recetaInput{
     rec_nombre: String,
     rec_imagen: String,
 }
+input reaccionInput{
+    usu_id: Int,
+    com_id: Int,
+    rea_like: Boolean
+}
 
 input ingredienteInput{
     tip_id: Int,
@@ -261,7 +266,7 @@ input categoriaInput {
     cat_nombre: String
 }
 
-input InstruccionInput{
+input instruccionInput{
     rec_id: Int,
     ins_numpaso: String,
     ins_descripcion: String
