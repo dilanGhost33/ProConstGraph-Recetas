@@ -122,6 +122,17 @@ const recetasResolver = {
     comentario: {
         async autor(comentario) {
             return db.one(`select * from usuario where usu_id=$1`, [comentario.usu_id])
+    }, Mutation: {
+        async createUsuario(root, { usuario }) {
+            if (usuario == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO usuario (usu_nickname, usu_nombre, usu_apellido, usu_clave, usu_estado, usu_imagen, usu_correo ) 
+                             VALUES ($1, $2, $3, $4, true, $5, $6) returning*;`
+                const resut = await db.one(sql, [usuario.usu_nickname, usuario.usu_nombre, usuario.usu_apellido, 
+                                                usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo ])
+                return resut
+            }
         },
         async reacciones(comentario) {
             return db.any(`select * from reacion where com_id=$1 and rea_estado=true`, [comentario.com_id])
