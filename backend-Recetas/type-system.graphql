@@ -14,6 +14,11 @@ type Mutation{
     createReaccion(reaccion:reaccionInput):reaccion
     createComentario(comentario:comentarioInput):comentario
     createCategoria(categoria:categoriaInput):categoria
+    createReceta(receta:recetaInput):receta
+    createIngrediente(ingrediente:ingredienteInput):ingrediente
+    createTipo(tipo:tipoInput):tipo
+    createInstruccion(instruccion:instruccionInput):instruccion
+    
     
     ActualizarComentario(comentario: comentarioUpdate): comentarioExtra
     ActualizarCategoria(categoria: categoriaUpdate): categoriaExtra
@@ -222,12 +227,29 @@ input usuarioInput{
     usu_imagen: String,
     usu_correo: String
 }
-
-input reaccionInput{
-    usu_id: Int,
-    com_id: Int,
-    rea_like: Boolean
+input recetaInput{
+    usu_id: String,
+    dif_id: String,
+    rec_nombre: String,
+    rec_imagen: String,
 }
+input recetaInput{
+    usu_id: Int,
+    dif_id: Int,
+    rec_nombre: String,
+    rec_imagen: String,
+}
+
+input ingredienteInput{
+    tip_id: Int,
+    ing_nombre: String,
+    ing_imagen: String,
+}
+
+input tipoInput {
+    tip_nombre: String
+}
+
 
 input comentarioInput{
     usu_id: Int,
@@ -238,6 +260,14 @@ input comentarioInput{
 input categoriaInput {
     cat_nombre: String
 }
+
+input InstruccionInput{
+    rec_id: Int,
+    ins_numpaso: String,
+    ins_descripcion: String
+    }
+
+
 
 input comentarioUpdate{
     com_id: Int!,

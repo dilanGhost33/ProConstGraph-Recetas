@@ -1,54 +1,70 @@
-const { db } = require("./cnn")
+const {
+    db
+} = require("./cnn")
 
 const recetasResolver = {
     Query: {
-        async usuarios(root, { nickname }) {
+        async usuarios(root, {
+            nickname
+        }) {
             if (nickname == undefined) {
                 return await db.any(`select * from usuario where usu_estado=true order by usu_id asc`)
             } else {
                 return await db.any(`select * from usuario where usu_estado=true and usu_nickname=$1`, [nickname])
             }
         },
-        async categorias(root, { name }) {
+        async categorias(root, {
+            name
+        }) {
             if (name == undefined) {
                 return await db.any(`select * from categoria where cat_estado=true order by cat_id asc`)
             } else {
                 return await db.any(`select * from categoria where cat_estado=true and cat_nombre=$1`, [name])
             }
         },
-        async dificultades(root, { name }) {
+        async dificultades(root, {
+            name
+        }) {
             if (name == undefined) {
                 return await db.any(`select * from dificultad order by dif_id asc`)
             } else {
                 return await db.any(`select * from dificultad where and dif_nombre=$1`, [name])
             }
         },
-        async ing_tipos(root, { name }) {
+        async ing_tipos(root, {
+            name
+        }) {
             if (name == undefined) {
                 return await db.any(`select * from ing_tipo where tip_estado=true order by tip_id asc`)
             } else {
                 return await db.any(`select * from ing_tipo where and tip_nombre=$1`, [name])
             }
         },
-        async ingredientes(root, { name }) {
+        async ingredientes(root, {
+            name
+        }) {
             if (name == undefined) {
                 return await db.any(`select * from ingrediente where ing_estado=true order by ing_id asc`)
             } else {
                 return await db.any(`select * from ingrediente where ing_estado=true and ing_nombre=$1`, [name])
             }
         },
-        async recetas(root, { name }) {
+        async recetas(root, {
+            name
+        }) {
             if (name == undefined) {
                 return await db.any(`select * from receta where rec_estado=true order by rec_id asc`)
             } else {
                 return await db.any(`select * from receta where rec_estado=true and rec_nombre=$1`, [name])
             }
         }
-    }, ingrediente: {
+    },
+    ingrediente: {
         async tipo(ingrediente) {
             return db.one(`select * from ing_tipo where tip_id=$1`, [ingrediente.tip_id])
         }
-    }, receta: {
+    },
+    receta: {
         async autor(receta) {
             return db.one(`select * from usuario where usu_id=$1`, [receta.usu_id])
         },
@@ -69,14 +85,16 @@ const recetasResolver = {
             return db.any(`select * from comentario co inner join com_rec cr on cr.com_id = co.com_id
             where cr.rec_id=$1 and cr.com_rec_estado=true`, [receta.rec_id])
         }
-    }, comentario: {
+    },
+    comentario: {
         async autor(comentario) {
             return db.one(`select * from usuario where usu_id=$1`, [comentario.usu_id])
         },
         async reacciones(comentario) {
             return db.any(`select * from reacion where com_id=$1 and rea_estado=true`, [comentario.com_id])
         }
-    }, reaccion: {
+    },
+    reaccion: {
         async autor(reaccion) {
             return db.one(`select * from usuario where usu_id=$1`, [reaccion.usu_id])
         },
@@ -100,29 +118,89 @@ const recetasResolver = {
             return db.any(`select * from comentario co inner join com_rec cr on cr.com_id = co.com_id
             where cr.rec_id=$1 and cr.com_rec_estado=true`, [receta.rec_id])
         }
-    }, comentario: {
+    },
+    comentario: {
         async autor(comentario) {
             return db.one(`select * from usuario where usu_id=$1`, [comentario.usu_id])
         },
         async reacciones(comentario) {
             return db.any(`select * from reacion where com_id=$1 and rea_estado=true`, [comentario.com_id])
         }
-    }, reaccion: {
+    },
+    reaccion: {
         async autor(reaccion) {
             return db.one(`select * from usuario where usu_id=$1`, [reaccion.usu_id])
         }
-    }, Mutation: {
-        async createUsuario(root, { usuario }) {
+    },
+    Mutation: {
+        async createReceta(root, {
+            receta
+        }) {
+            if (receta == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO public.receta(usu_id, dif_id, rec_imagen, rec_nombre, rec_estado, rec_tiempo)
+                             VALUES ($1, $2, $3, $4, true, true) returning*;`
+                const resut = await db.one(sql, [receta.usu_id, receta.dif_id, receta.nombre, receta.imagen])
+                return resut
+            }
+        },
+        async createIngrediente(root, {
+            ingrediente
+        }) {
+            if (ingrediente == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO 
+                            public.ingrediente(tip_id, ing_nombre, ing_imagen, ing_estado)
+                            VALUES ( $1, $2 , $3, true) returning*;`
+                const resut = await db.one(sql, [ingrediente.tip_id, ingrediente.nombre, ingrediente.imagen])
+                return resut
+            }
+        },
+        async createTipo(root, {
+            tipo
+        }) {
+            if (tipo == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO public.ing_tipo(tip_nombre, tip_estado)
+                                VALUES ($1, true) returning*;`
+                const resut = await db.one(sql, [tipo.nombre])
+                return resut
+            }
+        },
+        async createInstruccion(root, {
+            instruccion
+        }) {
+            if (instruccion == undefined)
+                return null
+            else {
+                const sql = `INSERT INTO 
+                            public.instruccion(rec_id, ins_numpaso, ins_descripcion, ins_estado)
+                            VALUES ($1, $2, $3, true) returning*;`
+                const resut = await db.one(sql, [instruccion.rec_id, instruccion.ins_numpaso, instruccion.ins_descripcion])
+                return resut
+            }
+        },
+
+        async createUsuario(root, {
+            usuario
+        }) {
             if (usuario == undefined)
                 return null
             else {
                 const sql = `INSERT INTO usuario (usu_nickname, usu_nombre, usu_apellido, usu_clave, usu_estado, usu_imagen, usu_correo ) 
                              VALUES ($1, $2, $3, $4, true, $5, $6) returning*;`
                 const resut = await db.one(sql, [usuario.usu_nickname, usuario.usu_nombre, usuario.usu_apellido,
-                usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo])
+                    usuario.usu_clave, usuario.usu_imagen, usuario.usu_correo
+                ])
                 return resut
             }
-        }, async createReaccion(root, { reaccion }) {
+        },
+        async createReaccion(root, {
+            reaccion
+        }) {
             if (reaccion == undefined)
                 return null
             else {
@@ -132,7 +210,9 @@ const recetasResolver = {
                 return resut
             }
         },
-        async createComentario(root, { comentario }) {
+        async createComentario(root, {
+            comentario
+        }) {
             if (comentario == undefined)
                 return null
             else {
@@ -141,7 +221,9 @@ const recetasResolver = {
                 return resut
             }
         },
-        async createCategoria(root, { categoria }) {
+        async createCategoria(root, {
+            categoria
+        }) {
             if (categoria == undefined)
                 return null
             else {

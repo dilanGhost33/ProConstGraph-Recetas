@@ -1,14 +1,14 @@
 
-CREATE SEQUENCE public.dificultad_dif_id_seq_1;
+CREATE SEQUENCE public.dificultad_dif_id_seq;
 
 CREATE TABLE public.dificultad (
-                dif_id INTEGER NOT NULL DEFAULT nextval('public.dificultad_dif_id_seq_1'),
+                dif_id INTEGER NOT NULL DEFAULT nextval('public.dificultad_dif_id_seq'),
                 dif_nombre VARCHAR NOT NULL,
                 CONSTRAINT dificultad_pk PRIMARY KEY (dif_id)
 );
 
 
-ALTER SEQUENCE public.dificultad_dif_id_seq_1 OWNED BY public.dificultad.dif_id;
+ALTER SEQUENCE public.dificultad_dif_id_seq OWNED BY public.dificultad.dif_id;
 
 CREATE SEQUENCE public.ing_tipo_tip_id_seq;
 
@@ -49,7 +49,7 @@ CREATE SEQUENCE public.categoria_cat_id_seq;
 CREATE TABLE public.categoria (
                 cat_id INTEGER NOT NULL DEFAULT nextval('public.categoria_cat_id_seq'),
                 cat_nombre VARCHAR NOT NULL,
-                cat_estado VARCHAR NOT NULL,
+                cat_estado BOOLEAN NOT NULL,
                 CONSTRAINT categoria_pk PRIMARY KEY (cat_id)
 );
 
@@ -81,33 +81,6 @@ CREATE UNIQUE INDEX usuarios_idx
  ON public.usuario
  ( usu_nickname, usu_correo );
 
-CREATE SEQUENCE public.comentario_com_id_seq;
-
-CREATE TABLE public.comentario (
-                com_id INTEGER NOT NULL DEFAULT nextval('public.comentario_com_id_seq'),
-                usu_id INTEGER NOT NULL,
-                com_descripcion VARCHAR,
-                com_estado BOOLEAN NOT NULL,
-                CONSTRAINT comentario_pk PRIMARY KEY (com_id)
-);
-
-
-ALTER SEQUENCE public.comentario_com_id_seq OWNED BY public.comentario.com_id;
-
-CREATE SEQUENCE public.reacion_rea_id_seq_1;
-
-CREATE TABLE public.reacion (
-                rea_id INTEGER NOT NULL DEFAULT nextval('public.reacion_rea_id_seq_1'),
-                usu_id INTEGER NOT NULL,
-                com_id INTEGER NOT NULL,
-                rea_like BOOLEAN,
-                rea_estado BOOLEAN,
-                CONSTRAINT reacion_pk PRIMARY KEY (rea_id)
-);
-
-
-ALTER SEQUENCE public.reacion_rea_id_seq_1 OWNED BY public.reacion.rea_id;
-
 CREATE SEQUENCE public.receta_rec_id_seq;
 
 CREATE TABLE public.receta (
@@ -124,18 +97,33 @@ CREATE TABLE public.receta (
 
 ALTER SEQUENCE public.receta_rec_id_seq OWNED BY public.receta.rec_id;
 
-CREATE SEQUENCE public.com_rec_com_rec_id_seq;
+CREATE SEQUENCE public.comentario_com_id_seq;
 
-CREATE TABLE public.com_rec (
-                com_rec_id INTEGER NOT NULL DEFAULT nextval('public.com_rec_com_rec_id_seq'),
+CREATE TABLE public.comentario (
+                com_id INTEGER NOT NULL DEFAULT nextval('public.comentario_com_id_seq'),
+                usu_id INTEGER NOT NULL,
                 rec_id INTEGER NOT NULL,
-                com_id INTEGER NOT NULL,
-                com_rec_estado BOOLEAN NOT NULL,
-                CONSTRAINT com_rec_pk PRIMARY KEY (com_rec_id)
+                com_descripcion VARCHAR,
+                com_estado BOOLEAN NOT NULL,
+                CONSTRAINT comentario_pk PRIMARY KEY (com_id)
 );
 
 
-ALTER SEQUENCE public.com_rec_com_rec_id_seq OWNED BY public.com_rec.com_rec_id;
+ALTER SEQUENCE public.comentario_com_id_seq OWNED BY public.comentario.com_id;
+
+CREATE SEQUENCE public.reaccion_rea_id_seq;
+
+CREATE TABLE public.reaccion (
+                rea_id INTEGER NOT NULL DEFAULT nextval('public.reaccion_rea_id_seq'),
+                usu_id INTEGER NOT NULL,
+                com_id INTEGER NOT NULL,
+                rea_like BOOLEAN,
+                rea_estado BOOLEAN,
+                CONSTRAINT reaccion_pk PRIMARY KEY (rea_id)
+);
+
+
+ALTER SEQUENCE public.reaccion_rea_id_seq OWNED BY public.reaccion.rea_id;
 
 CREATE SEQUENCE public.rec_cat_rec_cat_id_seq;
 
@@ -143,7 +131,7 @@ CREATE TABLE public.rec_cat (
                 rec_cat_id INTEGER NOT NULL DEFAULT nextval('public.rec_cat_rec_cat_id_seq'),
                 rec_id INTEGER NOT NULL,
                 cat_id INTEGER NOT NULL,
-                rec_cat_estado VARCHAR NOT NULL,
+                rec_cat_estado BOOLEAN NOT NULL,
                 CONSTRAINT rec_cat_pk PRIMARY KEY (rec_cat_id)
 );
 
@@ -172,7 +160,7 @@ CREATE TABLE public.det_receta (
                 ing_id INTEGER NOT NULL,
                 det_rec_cantidad DOUBLE PRECISION NOT NULL,
                 det_rec_unidad VARCHAR NOT NULL,
-                det_rec_estado VARCHAR NOT NULL,
+                det_rec_estado BOOLEAN NOT NULL,
                 CONSTRAINT det_receta_pk PRIMARY KEY (det_rec_id)
 );
 
@@ -214,7 +202,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.reacion ADD CONSTRAINT usuarios_reacion_fk
+ALTER TABLE public.reaccion ADD CONSTRAINT usuarios_reacion_fk
 FOREIGN KEY (usu_id)
 REFERENCES public.usuario (usu_id)
 ON DELETE NO ACTION
@@ -224,20 +212,6 @@ NOT DEFERRABLE;
 ALTER TABLE public.comentario ADD CONSTRAINT usuarios_comentarios_fk
 FOREIGN KEY (usu_id)
 REFERENCES public.usuario (usu_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.reacion ADD CONSTRAINT comentarios_reacion_fk
-FOREIGN KEY (com_id)
-REFERENCES public.comentario (com_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.com_rec ADD CONSTRAINT comentarios_com_rec_fk
-FOREIGN KEY (com_id)
-REFERENCES public.comentario (com_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -263,9 +237,16 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.com_rec ADD CONSTRAINT recetas_com_rec_fk
+ALTER TABLE public.comentario ADD CONSTRAINT receta_comentario_fk
 FOREIGN KEY (rec_id)
 REFERENCES public.receta (rec_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.reaccion ADD CONSTRAINT comentarios_reacion_fk
+FOREIGN KEY (com_id)
+REFERENCES public.comentario (com_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
