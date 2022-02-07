@@ -2,6 +2,7 @@ const express = require('express')
 const {graphqlExpress, graphiqlExpress} = require('graphql-server-express')
 const {importSchema}=require('graphql-import')
 const {makeExecutableSchema}=require('graphql-tools')
+const cors = require('cors')
 
 const app=express()
 app.use(express.json())
@@ -13,6 +14,7 @@ const schema=makeExecutableSchema({
     typeDefs,
     resolvers
 })
+app.use(cors({origin: true, credentials:true}))
 
 app.use("/recetas", graphqlExpress({schema}))
 app.use("/graphiql",graphiqlExpress({endpointURL:"/recetas"}))

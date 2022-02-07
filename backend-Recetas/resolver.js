@@ -82,8 +82,7 @@ const recetasResolver = {
             return db.any(`select * from instruccion where rec_id=$1`, [receta.rec_id])
         },
         async comentarios(receta) {
-            return db.any(`select * from comentario co inner join com_rec cr on cr.com_id = co.com_id
-            where cr.rec_id=$1 and cr.com_rec_estado=true`, [receta.rec_id])
+            return db.any(`select * from comentario where rec_id=$1 and com_estado=true`, [receta.rec_id])
         }
     },
     comentario: {
@@ -129,7 +128,11 @@ const recetasResolver = {
         async autor(reaccion) {
             return db.one(`select * from usuario where usu_id=$1`, [reaccion.usu_id])
         }
-    },   
+    }, detalle_receta: {
+        async ingrediente(detalle_receta) {
+            return db.one(`select * from ingrediente where ing_id=$1`, [detalle_receta.ing_id])
+        }
+    },
      Mutation: {
         async createReceta(root, {
             receta
@@ -142,6 +145,13 @@ const recetasResolver = {
                 const resut = await db.one(sql, [receta.usu_id, receta.dif_id, receta.nombre, receta.imagen])
                 return resut
             }
+        },
+        async createComentarioByText(root, { rec_id, usu_id, com_descripcion }){
+            const sql = `INSERT INTO comentario(
+                usu_id, rec_id, com_descripcion, com_estado)
+                VALUES ($1, $2, $3, true) returning*;`
+            const resut= await db.one(sql, [usu_id,rec_id,com_descripcion])
+            return resut
         },
         async createIngrediente(root, {
             ingrediente

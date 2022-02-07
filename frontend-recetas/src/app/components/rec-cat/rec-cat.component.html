@@ -1,1 +1,88 @@
-<p>rec-cat works!</p>
+<div class="container" style="margin-top:70px;">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover bg-white">
+                <div>
+                    <div>
+                        <div style="float: left">
+                            <label>Título: </label>
+                        </div>
+                        <div>
+                            <label>{{recetaSelected.rec_nombre}}</label>
+                        </div>
+                        <img src={{recetaSelected.rec_imagen}}
+                             width="30%" height="30%">
+                    </div>
+                    <div>
+                        <div style="float: left">
+                            <label>Creador: </label>
+                        </div>
+                        <div>
+                            <label>{{recetaSelected.autor.usu_nickname}}</label>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="float: left">
+                            <label>Dificultad: </label>
+                        </div>
+                        <div>
+                            <label>{{recetaSelected.dificultad.dif_nombre}}</label>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="float: left">
+                            <label>Tiempo de Ejecución: </label>
+                        </div>
+                        <div>
+                            <label>{{recetaSelected.rec_tiempo}} Minutos</label>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Ingredientes:</label>
+                        </div>
+                        <div>
+                            <dl *ngFor="let i of recetaSelected.detalles">
+                                <dt>{{i.det_rec_cantidad}} {{i.det_rec_unidad}} de {{i.ingrediente.ing_nombre}}</dt>
+                            </dl>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Pasos:</label>
+                        </div>
+                        <div>
+                            <ol >
+                                <li *ngFor="let i of recetaSelected.instrucciones">
+                                    <textarea>
+                                    {{i.ins_descripcion}}
+                                    </textarea>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Comentarios:</label>
+                    </div>
+                    <div>
+                        <form #projectForm="ngForm" (ngSubmit)="createComentarios(projectForm)">
+                            <div>
+                                <input type="text" name="Comentario" #name="ngModel" [(ngModel)]="comDescripcion" placeholder="Insertar Comentario" >
+                            </div>
+                            <button type="submit">Enviar Comentario</button>
+                        </form>
+                        
+                    </div>
+                    <div>
+                        <dl *ngFor="let i of recetaSelected.comentarios">
+                            <dt>{{i.autor.usu_nickname}}</dt>
+                            <dd>{{i.com_descripcion}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </table>
+        </div>
+    </div>
+</div>

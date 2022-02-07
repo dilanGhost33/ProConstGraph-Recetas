@@ -18,7 +18,7 @@ type Mutation{
     createIngrediente(ingrediente:ingredienteInput):ingrediente
     createTipo(tipo:tipoInput):ing_tipo
     createInstruccion(instruccion:instruccionInput):instruccion
-    
+    createComentarioByText(rec_id:Int, usu_id:Int, com_descripcion:String):comentario
     
     ActualizarComentario(comentario: comentarioUpdate): comentarioExtra
     ActualizarCategoria(categoria: categoriaUpdate): categoriaExtra
@@ -84,7 +84,7 @@ type detalle_receta {
     det_rec_id: Int!,
     det_rec_cantidad: Float,
     det_rec_unidad: String,
-    det_rec_estado: String,
+    det_rec_estado: Boolean,
     ingrediente: ingrediente
 }
 
@@ -194,7 +194,7 @@ type rec_catExtra{
     rec_cat_id: Int!,
     rec_id: Int,
     cat_id:Int,
-    rec_cat_estado: Boolean
+    rec_cat_estado: String
 }
 
 type recetaExtra{
@@ -300,7 +300,7 @@ input det_recetaUpdate{
     ing_id: Int,
     det_rec_cantidad: Int,
     det_rec_unidad: String,
-    det_rec_estado: String
+    det_rec_estado: Boolean
 }
 
 input dificultadUpdate{
