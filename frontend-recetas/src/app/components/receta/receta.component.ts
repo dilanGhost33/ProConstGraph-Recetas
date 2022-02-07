@@ -12,9 +12,16 @@ export class RecetaComponent implements OnInit {
 
   private querySubscription!:Subscription
 
-  categoria:any
-  dificultad:any
+  categorias:any
+  dificultades:any
   ingrediente:any
+
+  public categoriaSelected:Number []=[]
+  public dificultadSelected!:any
+  public nombreReceta!:String 
+  public duracion!:any
+  public linkImagen!:String 
+  public ingredienteSelected:any []=[]
 
   constructor(private apollo:Apollo) { }
 
@@ -28,8 +35,8 @@ export class RecetaComponent implements OnInit {
     this.querySubscription=this.apollo.watchQuery<any>({
       query:value.getCategorias
     }).valueChanges.subscribe(({data})=>{
-      this.categoria=data.categorias
-      console.log(this.categoria);
+      this.categorias=data.categorias
+      console.log(this.categorias);
     })
   }
 
@@ -37,8 +44,8 @@ export class RecetaComponent implements OnInit {
     this.querySubscription=this.apollo.watchQuery<any>({
       query:value.getDificultades
     }).valueChanges.subscribe(({data})=>{
-      this.dificultad=data.dificultades
-      console.log(this.dificultad);
+      this.dificultades=data.dificultades
+      console.log(this.dificultades);
     })
   }
 
@@ -49,6 +56,41 @@ export class RecetaComponent implements OnInit {
       this.ingrediente=data.ingredientes
       console.log(this.ingrediente);
     })
+  }
+
+
+  createReceta(form:any){
+    this.apollo.mutate({
+      mutation:value.createReceta,
+      variables:{
+        receta:{
+          usu_id:1,
+          dif_id:parseInt(this.dificultadSelected),
+          rec_nombre:this.nombreReceta,
+          rec_tiempo:parseFloat(this.duracion),
+          rec_imagen:this.linkImagen,
+          categorias:this.categoriaSelected
+          //ingredientes:this.ingredienteSelected
+        }
+      }
+    }).subscribe(({data})=>{
+      form.reset()
+      console.log(data);
+      //window.location.href="/pizza"
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+
+  active(id: any){
+    if(this.categoriaSelected.includes(id)){
+      let index = this.categoriaSelected.indexOf(id)
+      this.categoriaSelected.splice(index, 1)
+    }else{
+      this.categoriaSelected.push(id)
+    }
+    console.log(this.categoriaSelected)
   }
 
 }

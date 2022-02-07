@@ -10,6 +10,7 @@
   "author": "Kevin Lliguisupa, Wilson Sevilla, Jorge Jaramillo & Dilan Ramirez",
   "license": "ISC",
   "devDependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "graphql": "^15.8.0",
     "graphql-import": "^1.0.2",

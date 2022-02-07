@@ -24,5 +24,15 @@ export const value = {
           ing_imagen
           ing_estado
         }
-      }`
+      }`,
+      createReceta:gql
+      `mutation createReceta($receta:recetaInput!){
+        createReceta(receta:$receta){
+          rec_id
+          rec_imagen
+          rec_nombre
+          rec_estado
+          rec_tiempo
+        }
+    }`
 }

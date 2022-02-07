@@ -129,20 +129,40 @@ const recetasResolver = {
         async autor(reaccion) {
             return db.one(`select * from usuario where usu_id=$1`, [reaccion.usu_id])
         }
+    }, detalle_receta: {
+        async ingrediente(detalle_receta) {
+            return db.one(`select * from ingrediente where ing_id=$1`, [detalle_receta.ing_id])
+        }
     },   
      Mutation: {
-        async createReceta(root, {
-            receta
-        }) {
+        async createReceta(root, { receta }) {
+
             if (receta == undefined)
-                return null
-            else {
-                const sql = `INSERT INTO public.receta(usu_id, dif_id, rec_imagen, rec_nombre, rec_estado, rec_tiempo)
-                             VALUES ($1, $2, $3, $4, true, true) returning*;`
-                const resut = await db.one(sql, [receta.usu_id, receta.dif_id, receta.nombre, receta.imagen])
+            return null
+        else {
+            const sql = `INSERT INTO public.receta(usu_id, dif_id, rec_imagen, rec_nombre, rec_tiempo, rec_estado)
+                         VALUES ($1, $2, $3, $4, $5, true) returning*;`
+            const resut = await db.one(sql, [receta.usu_id, receta.dif_id, receta.rec_imagen, receta.rec_nombre, receta.rec_tiempo])
+                //Insertar categorias a Recetas
+                if (receta.categorias && receta.categorias.length > 0) {
+                    receta.categorias.forEach(cat_id => {
+                        const sql = `INSERT INTO rec_cat(rec_id,cat_id,rec_cat_estado) VALUES($1,$2,true)`
+                        db.one(sql, [resut.rec_id, cat_id])
+                    });
+                }
+                //Insertar ingredientes a Recetas
+                if (receta.ingredientes && receta.ingredientes.length > 0) {
+                    receta.ingredientes.forEach(det_receta => {
+                        const sql = `INSERT INTO det_receta(rec_id,ing_id,det_rec_cantidad,det_rec_unidad,det_rec_estado) 
+                        VALUES($1,$2,$3,$4,true) RETURNING*;`
+                        db.any(sql, [resut.rec_id, det_receta.ing_id, det_receta.det_rec_cantidad, det_receta.det_rec_unidad])
+                    });
+                }
                 return resut
             }
+
         },
+
         async createIngrediente(root, {
             ingrediente
         }) {

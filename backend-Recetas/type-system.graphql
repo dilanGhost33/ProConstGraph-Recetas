@@ -227,23 +227,28 @@ input usuarioInput{
     usu_imagen: String,
     usu_correo: String
 }
-input recetaInput{
-    usu_id: String,
-    dif_id: String,
-    rec_nombre: String,
-    rec_imagen: String,
+
+input detalle_recetaInput{
+    ing_id: Int!,
+    det_rec_cantidad: Int,
+    det_rec_unidad: String
 }
+
 input recetaInput{
     usu_id: Int,
     dif_id: Int,
     rec_nombre: String,
+    rec_tiempo: Float,
     rec_imagen: String,
+    categorias: [Int],
+    ingredientes: [detalle_recetaInput]
 }
 input reaccionInput{
     usu_id: Int,
     com_id: Int,
     rea_like: Boolean
 }
+
 
 input ingredienteInput{
     tip_id: Int,
@@ -271,8 +276,6 @@ input instruccionInput{
     ins_numpaso: String,
     ins_descripcion: String
     }
-
-
 
 input comentarioUpdate{
     com_id: Int!,

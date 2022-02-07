@@ -6,6 +6,7 @@ const {makeExecutableSchema}=require('graphql-tools')
 const app=express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+const cors=require('cors')
 
 const typeDefs=importSchema('./type-system.graphql')
 const resolvers=require('./resolver')
@@ -14,6 +15,7 @@ const schema=makeExecutableSchema({
     resolvers
 })
 
+app.use(cors({ origin: true, credentials: true  }));
 app.use("/recetas", graphqlExpress({schema}))
 app.use("/graphiql",graphiqlExpress({endpointURL:"/recetas"}))
 
