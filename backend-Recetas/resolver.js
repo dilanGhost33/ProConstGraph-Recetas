@@ -79,7 +79,7 @@ const recetasResolver = {
             return db.any(`select * from det_receta where rec_id=$1`, [receta.rec_id])
         },
         async instrucciones(receta) {
-            return db.any(`select * from instruccion where rec_id=$1`, [receta.rec_id])
+            return db.any(`select * from instruccion where rec_id=$1 ORDER BY ins_numpaso ASC `, [receta.rec_id])
         },
         async comentarios(receta) {
             return db.any(`select * from comentario where rec_id=$1 and com_estado=true`, [receta.rec_id])
@@ -111,7 +111,7 @@ const recetasResolver = {
             return db.any(`select * from det_receta where rec_id=$1`, [receta.rec_id])
         },
         async instrucciones(receta) {
-            return db.any(`select * from instruccion where rec_id=$1`, [receta.rec_id])
+            return db.any(`select * from instruccion where rec_id=$1 ORDER BY ins_numpaso ASC `, [receta.rec_id])
         },
         async comentarios(receta) {
             return db.any(`select * from comentario co inner join com_rec cr on cr.com_id = co.com_id

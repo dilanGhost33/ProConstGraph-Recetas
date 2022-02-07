@@ -83,14 +83,6 @@ export const value ={
       createComentario(comentario:$comentario){
         com_descripcion
       }
-    }`,InsertarComentarioByID: gql `
-    mutation createComentarioByText ($rec_id:Int, $usu_id:Int, $com_descripcion:String){
-      createComentarioByText(rec_id:$rec_id,usu_id:$usu_id,com_descripcion:$com_descripcion){
-        com_id,
-        com_estado,
-        com_descripcion
-      }
-    }
-    `
+    }`
 
 }
